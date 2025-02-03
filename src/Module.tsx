@@ -2,17 +2,12 @@ import {
   Button,
   Checkbox,
   ControlGroup,
-  Divider,
   FormGroup,
   InputGroup,
   MenuItem,
-  Switch,
-  TextArea,
 } from "@blueprintjs/core";
-import { DateInput3, DatePicker3 } from "@blueprintjs/datetime2";
 import { Select } from "@blueprintjs/select";
 import { useEffect, useState } from "react";
-import { Form } from "react-router";
 
 const ITEMS = [
   { value: "text", label: "Text" },

@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogBody,
@@ -18,7 +17,7 @@ import {
   useProjects,
   WorkItemState,
 } from "./state/workitem";
-import { enIN, tr } from "date-fns/locale";
+import { enIN } from "date-fns/locale";
 import {
   CreateOneWorkItem,
   CreateProject,
@@ -26,13 +25,11 @@ import {
   DeleteWorkItem,
   QueryWorkItems,
   ReadAllProject,
-  ReadAllWorkItems,
   UpdateWorkItem,
 } from "./persistance";
 import { useEffect, useState } from "react";
 import { navigateTo } from "./panel_nav";
 import { Select } from "@blueprintjs/select";
-import { useNotes } from "./state/notes";
 
 export default function WorkItems() {
   const [workitems, setWorkItems] = useRecoilState(WorkItemState);

@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import { navigateTo } from "./panel_nav"
 
 
 export default function Nav() {

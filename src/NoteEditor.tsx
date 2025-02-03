@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { GetNote, UpdateNote } from "./persistance";
 import { EditableText } from "@blueprintjs/core";
@@ -63,11 +63,13 @@ export default function NoteEditor() {
         value={currentNote.content}
         onChange={async (value) => {
           if (!value) {
+            // @ts-expect-error: value is not null
             setCurrentNote((note) => {
               return { ...note, content: "" };
             });
             return;
           }
+          // @ts-expect-error: value is not null
           setCurrentNote((note) => {
             return { ...note, content: value };
           });

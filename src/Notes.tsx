@@ -98,6 +98,7 @@ export default function Notes() {
                 to={`/noteeditor/${note._id}`}
                 onClick={() => {
                   addToPath({ _id: note._id, name: note.name });
+                  // @ts-expect-error: PROBLEM TODO
                   setCurrentNote(note);
                   navigateTo("/preview");
                 }}

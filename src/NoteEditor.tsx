@@ -6,6 +6,8 @@ import { useCurrentNote, useNotes } from "./state/notes";
 import Markdown from "react-markdown";
 import { debounce } from "throttle-debounce";
 import { navigateTo } from "./panel_nav";
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+import {oneLight} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export default function NoteEditor() {
   const { noteid } = useParams();
@@ -102,7 +104,50 @@ export function NoteEditorPreview() {
   return (
     <div className="container notes">
       <h2>{currentNote.name}</h2>
-      <Markdown className="mar-top">{currentNote.content}</Markdown>
+      <Markdown
+        className="rmd"
+        components={{
+          code(props) {
+            const {children, className, ...rest} = props
+            const match = /language-(\w+)/.exec(className || '')
+            return match ? (
+              <SyntaxHighlighter
+                {...rest}
+                PreTag="div"
+                children={String(children).replace(/\n$/, '')}
+                language={match[1]}
+                style={oneLight}
+              />
+            ) : (
+              <code {...rest} className="inline">
+                {children}
+              </code>
+            )
+          },
+          p: (m) => {
+            console.log("para", m)
+            if (typeof m.children === "string" && m.children.startsWith("#center")) {
+              return <h1 className="center">{m.children.substring(7)}</h1>;
+            }
+            if (typeof m.children === "string" && m.children.startsWith("##center")) {
+              return <h2 className="center">{m.children.substring(8)}</h2>;
+            }
+            if (typeof m.children === "string" && m.children.startsWith("###center")) {
+              return <h3 className="center">{m.children.substring(9)}</h3>;
+            }
+            if (typeof m.children === "string" && m.children.startsWith("####center")) {
+              return <h4 className="center">{m.children.substring(10)}</h4>;
+            }
+            if (typeof m.children === "string" && m.children.startsWith("#####center")) {
+              return <h5 className="center">{m.children.substring(11)}</h5>;
+            }
+            if (typeof m.children === "string" && m.children.startsWith("######center")) {
+              return <h6 className="center">{m.children.substring(12)}</h6>;
+            }
+            return <p className="md">{m.children}</p>;
+          },
+        }}
+      >{currentNote.content}</Markdown>
     </div>
   );
 }

@@ -12,7 +12,7 @@ function App() {
         </Panel>
         <PanelResizeHandle />
     
-        <Panel defaultSize={30} minSize={30} className="panel-1">
+        <Panel defaultSize={40} minSize={30} className="panel-1">
           <SidePanel />
         </Panel>
       </PanelGroup>

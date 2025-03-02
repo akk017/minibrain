@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate} from "react-router";
 import { AddWorkItem } from "./WorkItem";
 import { setNavigate } from "./panel_nav";
 import { NoteEditorPreview } from "./NoteEditor";
+import Tracker, { TrackerChart } from "./Tracker";
 
 
 
@@ -21,6 +22,7 @@ export default function SidePanel() {
       <Routes>
         <Route path="workitems" element={<AddWorkItem />} />
         <Route index path="preview" element={<NoteEditorPreview />} />
+        <Route path="tracker" element={<TrackerChart />} />
       </Routes>
     </BrowserRouter>
   );

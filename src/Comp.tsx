@@ -5,6 +5,7 @@ import WorkItems from "./WorkItem";
 import Notes from "./Notes";
 import NoteEditor from "./NoteEditor";
 import Bookmarks from "./Bookmarks";
+import Tracker from "./Tracker";
 
 export default function Comp() {
   return (
@@ -17,6 +18,7 @@ export default function Comp() {
         <Route path="notes/:noteid" element={<Notes />} />
         <Route path="noteeditor/:noteid" element={<NoteEditor />} />
         <Route path="bookmarks" element={<Bookmarks />} />
+        <Route path="tracker" element={<Tracker />} />
       </Routes>
     </BrowserRouter>
   );

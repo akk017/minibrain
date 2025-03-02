@@ -281,3 +281,50 @@ export const UpdateNote = (id: string, note: INote) => {
 };
 
 
+export const AddEntry = (weight: string) => {
+  const body = JSON.stringify({
+    OPERATION: "CREATE",
+    COLLECTION: "tracker",
+    CREATED_BY: "minibrain-0017",
+    DATA: {
+      weight: parseInt(weight),
+      date: new Date().toISOString(),
+    }
+  });
+  const options = {
+    method: "POST",
+    headers: myHeaders,
+    body: body,
+  };
+  return fetch(API_URL, options);
+};
+
+export const GetAllEntry = (weight: string) => {
+  const body = JSON.stringify({
+    OPERATION: "READ-ALL",
+    COLLECTION: "tracker",
+    CREATED_BY: "minibrain-0017",
+  });
+  const options = {
+    method: "POST",
+    headers: myHeaders,
+    body: body,
+  };
+  return fetch(API_URL, options);
+};
+
+export const DeleteEntry = (id: string) => {
+  const body = JSON.stringify({
+    OPERATION: "DELETE",
+    COLLECTION: "tracker",
+    CREATED_BY: "minibrain-0017",
+    ID: id
+  });
+  const options = {
+    method: "POST",
+    headers: myHeaders,
+    body: body,
+  };
+  return fetch(API_URL, options);
+};
+

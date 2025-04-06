@@ -205,28 +205,14 @@ p.md {
 blockquote {
     background-color: oklch(0.938 0.127 124.321);
     color: oklch(0.274 0.072 132.109);
-    padding: 20px;
+    padding: 10px;
     padding-left: 35px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-}
 
-blockquote > p {
-    margin-top: 0px;
-    margin-bottom: 0px;
 }
 
 div.ru {
     width: 20px;
-    height: 100%;
-}
-
-div.tiptap {
-    outline: none !important;
-    height: 100%;
-}
-
-div.editor {
-    margin-top: 20px;
     height: 100%;
 }

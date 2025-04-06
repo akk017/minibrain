@@ -4,12 +4,12 @@ import { AddEntry, DeleteEntry, GetAllEntry } from "./persistance"
 
 
 export default function Tracker() {
-    const [state, setState] = useState<string>("<reset>")
+    const [state, setState] = useState<string>("0")
     const [all, setAll] = useState([])
 
     useEffect(() => {
         const get = async () => {
-            const resp = await GetAllEntry(state)
+            const resp = await GetAllEntry()
             const data = await resp.json()
             if (data === null) return
             data.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));

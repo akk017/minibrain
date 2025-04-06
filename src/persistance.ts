@@ -287,7 +287,7 @@ export const AddEntry = (weight: string) => {
     COLLECTION: "tracker",
     CREATED_BY: "minibrain-0017",
     DATA: {
-      weight: parseInt(weight),
+      weight: weight,
       date: new Date().toISOString(),
     }
   });
@@ -299,7 +299,7 @@ export const AddEntry = (weight: string) => {
   return fetch(API_URL, options);
 };
 
-export const GetAllEntry = (weight: string) => {
+export const GetAllEntry = () => {
   const body = JSON.stringify({
     OPERATION: "READ-ALL",
     COLLECTION: "tracker",

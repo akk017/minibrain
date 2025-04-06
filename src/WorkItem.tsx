@@ -235,7 +235,7 @@ export function AddWorkItem() {
 
   if (!currentWorkItem) return <></>;
 
-  console.log("WorkItem", currentProject);
+  console.log("WorkItem", currentWorkItem.startDate.length);
 
   return (
     <div className="container">
@@ -312,7 +312,7 @@ export function AddWorkItem() {
           popoverProps={{ minimal: true, position: "bottom-left" }}
           dateFnsFormat="dd-MMM-yyyy"
           locale={enIN}
-          value={currentWorkItem.startDate}
+          value={currentWorkItem.startDate.length !== 0 ? currentWorkItem.startDate : new Date().toISOString()}
           onChange={(value) => {
             if (!value) return;
             setCurrentWorkItem({ ...currentWorkItem, startDate: value });

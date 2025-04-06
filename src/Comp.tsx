@@ -6,6 +6,7 @@ import Notes from "./Notes";
 import NoteEditor from "./NoteEditor";
 import Bookmarks from "./Bookmarks";
 import Tracker from "./Tracker";
+import Accounts from "./Accounts";
 
 export default function Comp() {
   return (
@@ -19,6 +20,7 @@ export default function Comp() {
         <Route path="noteeditor/:noteid" element={<NoteEditor />} />
         <Route path="bookmarks" element={<Bookmarks />} />
         <Route path="tracker" element={<Tracker />} />
+        <Route path="accounts" element={<Accounts />} />
       </Routes>
     </BrowserRouter>
   );

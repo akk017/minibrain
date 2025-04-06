@@ -211,3 +211,8 @@ blockquote {
     margin-inline-end: 0px;
 
 }
+
+div.ru {
+    width: 20px;
+    height: 100%;
+}

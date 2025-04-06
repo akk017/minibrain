@@ -194,14 +194,13 @@ export const CreateNote = (name: string, parentid: string) => {
   return fetch(API_URL, options);
 };
 
-export const MoveFolder = (item: INoteItem, parentid: string) => {
+export const MoveFolder = (id: string, parentid: string) => {
   const body = JSON.stringify({
     OPERATION: "UPDATE",
     COLLECTION: "notes",
     CREATED_BY: "minibrain-0017",
-    ID: item._id,
+    ID: id,
     DATA: {
-      ...item,
       parentid: parentid,
     }
   });

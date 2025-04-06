@@ -7,12 +7,12 @@ function App() {
   return (
     <div className="main">
       <PanelGroup direction="horizontal" className="panel-group">
-        <Panel className="panel-1" minSize={30}>
+        <Panel className="panel-1" defaultSize={70}>
           <Comp />
         </Panel>
         <PanelResizeHandle />
-    
-        <Panel defaultSize={40} minSize={30} className="panel-1">
+
+        <Panel defaultSize={30} className="panel-1">
           <SidePanel />
         </Panel>
       </PanelGroup>

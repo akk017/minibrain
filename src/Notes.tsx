@@ -6,8 +6,15 @@ import {
   Popover,
 } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
-import { CreateFolder, CreateNote, DeleteNote, GetNote, MoveFolder, QueryRoot } from "./persistance";
-import { useCurrentNote, useNotes } from "./state/notes";
+import {
+  CreateFolder,
+  CreateNote,
+  DeleteNote,
+  GetNote,
+  MoveFolder,
+  QueryRoot,
+} from "./persistance";
+import { CurrentNoteState, useCurrentNote, useNotes } from "./state/notes";
 import { Link, useNavigate, useParams } from "react-router";
 import { navigateTo } from "./panel_nav";
 
@@ -15,11 +22,19 @@ export default function Notes() {
   const [noteName, setNoteName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [moveto, setMoveto] = useState("");
-  const { notes, trigger, addToPath, path, setNotes, removeFromPath } =
-    useNotes();
+  const {
+    notes,
+    trigger,
+    addToPath,
+    path,
+    setNotes,
+    removeFromPath,
+    readerMode,
+    setReaderMode,
+  } = useNotes();
   const { noteid } = useParams();
   const navigate = useNavigate();
-  const { setCurrentNote, setCurrentFolder, currentFolder } = useCurrentNote();
+  const { setCurrentNote, setCurrentFolder, currentFolder, currentNote } = useCurrentNote();
 
   useEffect(() => {
     if (noteid) {
@@ -42,7 +57,6 @@ export default function Notes() {
             setCurrentNote(currentData);
           }
         }
-
       };
 
       if (noteid) {
@@ -55,17 +69,24 @@ export default function Notes() {
     <div className="container notes">
       <h3>Notes</h3>
 
-      <div className="hflex mar-top">
-        {path.map((p, index) => (
-          <>
-            <Link to={`/notes/${p._id}`} onClick={() => removeFromPath(p)}>
-              {p.name}
-            </Link>
-            <p style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-              {index === path.length - 1 ? "" : " / "}
-            </p>
-          </>
-        ))}
+      <div className="hflex mar-top space-between">
+        <div className="hflex">
+          {path.map((p, index) => (
+            <>
+              <Link to={`/notes/${p._id}`} onClick={() => removeFromPath(p)}>
+                {p.name}
+              </Link>
+              <p style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+                {index === path.length - 1 ? "" : " / "}
+              </p>
+            </>
+          ))}
+        </div>
+        <div className="hflex">
+          <a onClick={() => setReaderMode((prev) => !prev)}>
+           Reader Mode -- {readerMode ? "Off" : "On"}
+          </a>
+        </div>
       </div>
 
       {notes.filter((note) => note.type === "folder").length > 0 && (
@@ -77,10 +98,9 @@ export default function Notes() {
                 key={index}
                 to={`/notes/${folder._id}`}
                 onClick={() => {
-                  addToPath({ _id: folder._id, name: folder.name })
-                  setCurrentFolder(folder)
-                } 
-                }
+                  addToPath({ _id: folder._id, name: folder.name });
+                  setCurrentFolder(folder);
+                }}
               >
                 {folder.name}
               </Link>
@@ -188,12 +208,22 @@ export default function Notes() {
                     }}
                   />
                   <ButtonGroup className="mar-top">
-                    <Button intent="primary" onClick={async () => {
-                      if (!moveto) return;
-                      if (!currentFolder) return;
-                      await MoveFolder(currentFolder, moveto);
-                      setMoveto("");
-                    }}>
+                    <Button
+                      intent="primary"
+                      onClick={async () => {
+                        if (!moveto) return;
+                        await MoveFolder(noteid, moveto);
+                        setMoveto("");
+                        if (path.length === 1) {
+                          navigate("/notes");
+                        } else {
+                          navigate(`/notes/${path[path.length - 2]._id}`);
+                          const item = path[path.length - 2];
+                          removeFromPath(item);
+                        }
+                        trigger();
+                      }}
+                    >
                       Move
                     </Button>
                   </ButtonGroup>

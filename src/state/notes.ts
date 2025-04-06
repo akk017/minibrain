@@ -54,6 +54,7 @@ export function useNotes() {
     const [count, setCount] = useState(0);
     const [notes, setNotes] = useRecoilState(NotesState);
     const [path, setPath] = useRecoilState(Path);
+    const [readerMode, setReaderMode] = useState(false);
 
     useEffect(() => {
         const getAll = async () => {
@@ -83,7 +84,7 @@ export function useNotes() {
         setCount((count) => count + 1);
     }
 
-    return { trigger, notes, setNotes, addToPath, path, removeFromPath};
+    return { trigger, notes, setNotes, addToPath, path, removeFromPath, readerMode, setReaderMode};
 }
 
 

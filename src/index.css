@@ -91,6 +91,10 @@ hr.vertical{
     flex-direction: column;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
 .gap-10 {
     gap: 10px;
 }
@@ -174,6 +178,7 @@ input#required {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-top: 20px;
 }
 
 hr {

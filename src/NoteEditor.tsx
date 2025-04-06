@@ -145,56 +145,6 @@ function CustomMarkdown(currentNote: INote) {
             </code>
           );
         },
-        p: (m) => {
-          console.log("para", m);
-
-          if (
-            typeof m.children === "string" &&
-            m.children.startsWith("#center")
-          ) {
-            return <h1 className="center">{m.children.substring(7)}</h1>;
-          } else if (
-            typeof m.children === "string" &&
-            m.children.startsWith("##center")
-          ) {
-            return <h2 className="center">{m.children.substring(8)}</h2>;
-          } else if (
-            typeof m.children === "string" &&
-            m.children.startsWith("###center")
-          ) {
-            return <h3 className="center">{m.children.substring(9)}</h3>;
-          } else if (
-            typeof m.children === "string" &&
-            m.children.startsWith("####center")
-          ) {
-            return <h4 className="center">{m.children.substring(10)}</h4>;
-          } else if (
-            typeof m.children === "string" &&
-            m.children.startsWith("#####center")
-          ) {
-            return <h5 className="center">{m.children.substring(11)}</h5>;
-          } else if (
-            typeof m.children === "string" &&
-            m.children.startsWith("######center")
-          ) {
-            return <h6 className="center">{m.children.substring(12)}</h6>;
-          } else {
-            let child;
-            if (!m.children) return;
-            if (typeof m.children === "string") {
-              child = m.children.split("\n");
-            } else {
-              return <p>{m.children}</p>;
-            }
-            return (
-              <>
-                {child.map((c, index) => {
-                  return <p key={index}>{c}</p>;
-                })}
-              </>
-            );
-          }
-        },
       }}
     >
       {currentNote.content}

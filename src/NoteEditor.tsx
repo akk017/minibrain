@@ -5,7 +5,6 @@ import { EditableText } from "@blueprintjs/core";
 import { INote, useCurrentNote, useNotes } from "./state/notes";
 import Markdown from "react-markdown";
 import { debounce } from "throttle-debounce";
-import { navigateTo } from "./panel_nav";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -22,7 +21,7 @@ export default function NoteEditor() {
         setCurrentNote(null);
       }
       setCurrentNote(data);
-      navigateTo("/preview");
+      // navigateTo("/preview");
     };
 
     if (noteid && currentNote === null) {
@@ -65,9 +64,7 @@ export default function NoteEditor() {
       <h3 className="mar-top">{currentNote.name}</h3>
 
       {readerMode ? (
-        <div className="mar-top">
-          <div className="rmd">{CustomMarkdown(currentNote)}</div>
-        </div>
+        <></>
       ) : (
         <EditableText
           multiline

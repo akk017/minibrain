@@ -168,6 +168,7 @@ input#required {
 .notes {
     min-width: 300px;
     height: 100%;
+    overflow: hidden;
 }
 
 /* .note-editor {
@@ -179,6 +180,13 @@ input#required {
     flex-direction: column;
     width: 100%;
     padding-top: 20px;
+}
+
+.rmd img {
+    width: 100%;
+}
+.rmd li {
+    line-height: 1.7;
 }
 
 hr {
@@ -214,10 +222,33 @@ blockquote {
     padding-left: 35px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+    padding-top: 10px;
 
+}
+
+blockquote > p {
+    margin: 0px;
 }
 
 div.ru {
     width: 20px;
     height: 100%;
+}
+
+table.rmd-table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+.task-list-item > input {
+    width: 20px;
+}
+
+table.rmd-table td {
+    padding-left: 11px !important;
+}
+
+table.rmd-table > thead > tr > th {
+    padding-left: 11px !important;
 }

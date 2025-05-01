@@ -213,6 +213,25 @@ export const MoveFolder = (id: string, parentid: string) => {
 };
 
 
+export const RenameNote = (id: string, name: string) => {
+  const body = JSON.stringify({
+    OPERATION: "UPDATE",
+    COLLECTION: "notes",
+    CREATED_BY: "minibrain-0017",
+    ID: id,
+    DATA: {
+      name: name
+    }
+  });
+  const options = {
+    method: "POST",
+    headers: myHeaders,
+    body: body,
+  };
+  return fetch(API_URL, options);
+};
+
+
 export const DeleteNote = (id: string) => {
   const body = JSON.stringify({
     OPERATION: "DELETE",

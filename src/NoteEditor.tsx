@@ -2,11 +2,15 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { GetNote, UpdateNote } from "./persistance";
 import { EditableText } from "@blueprintjs/core";
-import { INote, useCurrentNote, useNotes } from "./state/notes";
+import { useCurrentNote, useNotes } from "./state/notes";
 import Markdown from "react-markdown";
 import { debounce } from "throttle-debounce";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { navigateTo } from "./panel_nav";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
+import { Editor } from "@monaco-editor/react";
 
 export default function NoteEditor() {
   const { noteid } = useParams();
@@ -21,15 +25,13 @@ export default function NoteEditor() {
         setCurrentNote(null);
       }
       setCurrentNote(data);
-      // navigateTo("/preview");
+      navigateTo("/preview");
     };
 
     if (noteid && currentNote === null) {
       getNote(noteid);
     }
   }, []);
-
-  console.log("NoteEditor", currentNote);
 
   if (!currentNote) {
     return (
@@ -66,14 +68,11 @@ export default function NoteEditor() {
       {readerMode ? (
         <></>
       ) : (
-        <EditableText
-          multiline
-          minLines={30}
-          maxLines={1000000}
-          className="mar-top note-editor"
-          placeholder="Start typing..."
+        <Editor
+          options={{ minimap: { showSlider: "mouseover", autohide: true } }}
+          defaultLanguage="markdown"
           value={currentNote.content}
-          onChange={async (value) => {
+          onChange={(value) => {
             if (!value) {
               // @ts-expect-error: value is not null
               setCurrentNote((note) => {
@@ -90,9 +89,6 @@ export default function NoteEditor() {
               await UpdateNote(currentNote._id, currentNote);
             });
             debouncedSync();
-          }}
-          onConfirm={async () => {
-            await UpdateNote(currentNote._id, currentNote);
           }}
         />
       )}
@@ -112,39 +108,44 @@ export function NoteEditorPreview() {
     );
   }
 
+  console.log("conten \n", currentNote.content);
+
   return (
     <div className="container notes">
       <h2>{currentNote.name}</h2>
-      {CustomMarkdown(currentNote)}
+      <Markdown
+        className="rmd"
+        remarkPlugins={[remarkBreaks, remarkGfm]}
+        components={{
+          table(props) {
+            return (
+              <table
+                className="bp5-html-table rmd-table bp5-interactive bp5-html-table-bordered"
+                {...props}
+              />
+            );
+          },
+          code(props) {
+            const { children, className, ...rest } = props;
+            const match = /language-(\w+)/.exec(className || "");
+            return match ? (
+              <SyntaxHighlighter
+                {...rest}
+                PreTag="div"
+                children={String(children).replace(/\n$/, "")}
+                language={match[1]}
+                style={oneLight}
+              />
+            ) : (
+              <code {...rest} className="inline">
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {currentNote.content}
+      </Markdown>
     </div>
-  );
-}
-
-function CustomMarkdown(currentNote: INote) {
-  return (
-    <Markdown
-      className="rmd"
-      components={{
-        code(props) {
-          const { children, className, ...rest } = props;
-          const match = /language-(\w+)/.exec(className || "");
-          return match ? (
-            <SyntaxHighlighter
-              {...rest}
-              PreTag="div"
-              children={String(children).replace(/\n$/, "")}
-              language={match[1]}
-              style={oneLight}
-            />
-          ) : (
-            <code {...rest} className="inline">
-              {children}
-            </code>
-          );
-        },
-      }}
-    >
-      {currentNote.content}
-    </Markdown>
   );
 }

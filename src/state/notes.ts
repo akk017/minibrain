@@ -67,6 +67,7 @@ export function useNotes() {
             const resp = await QueryRoot(noteid);
             const data = await resp.json();
             if (data === null) return;
+            console.log(data)
             setNotes(data);
         };
         getAll();
@@ -84,7 +85,7 @@ export function useNotes() {
         setCount((count) => count + 1);
     }
 
-    return { trigger, notes, setNotes, addToPath, path, removeFromPath, readerMode, setReaderMode};
+    return { trigger, notes, setNotes, addToPath, path, setPath, removeFromPath, readerMode, setReaderMode};
 }
 
 

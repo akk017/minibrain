@@ -4,6 +4,8 @@ import {
   Card,
   InputGroup,
   Popover,
+  Toaster,
+  OverlayToaster
 } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
 import {
@@ -13,20 +15,27 @@ import {
   GetNote,
   MoveFolder,
   QueryRoot,
+  RenameNote,
 } from "./persistance";
 import { CurrentNoteState, useCurrentNote, useNotes } from "./state/notes";
 import { Link, useNavigate, useParams } from "react-router";
 import { navigateTo } from "./panel_nav";
 
+const NotesToaster: Toaster = await OverlayToaster.createAsync({
+  position: "top",
+});
+
 export default function Notes() {
   const [noteName, setNoteName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [moveto, setMoveto] = useState("");
+  const [renameVal, setRenameVal] = useState("");
   const {
     notes,
     trigger,
     addToPath,
     path,
+    setPath,
     setNotes,
     removeFromPath,
     readerMode,
@@ -44,6 +53,7 @@ export default function Notes() {
         if (data === null) {
           setNotes([]);
         } else {
+          data.sort((a, b) => a.name.localeCompare(b.name));
           setNotes(data);
         }
         const current = await GetNote(noteid);
@@ -195,6 +205,62 @@ export default function Notes() {
         </Popover>
         {noteid && noteid !== "root" && (
           <>
+            <Popover
+              content={
+                <Card>
+                  <h4>Rename to</h4>
+                  <InputGroup
+                    placeholder="Rename To"
+                    className="mar-top"
+                    value={renameVal}
+                    onValueChange={(value: string) => {
+                      setRenameVal(value);
+                    }}
+                  />
+                  <ButtonGroup className="mar-top">
+                    <Button
+                      intent="primary"
+                      onClick={async () => {
+                        const pathid = window.location.pathname.split("/")
+                        const id = pathid[pathid.length - 1]
+                        const res = await RenameNote(id, renameVal);
+                        if (res.status == 200) {
+                          NotesToaster.show({
+                            message: "Rename Ok",
+                            intent: "success"
+                          })
+                        } else {
+                          NotesToaster.show({
+                            message: "Rename Failed",
+                            intent: "danger"
+                          })
+                          return;
+                        }
+                        setPath((prev) => {
+                          if (!prev) return prev;
+                          const elems = [...prev]
+                          const path = window.location.pathname.split("/")
+                          const id = path[path.length - 1]
+                          for(let i=0; i < elems.length;i++){
+                            if (elems[i]._id == id) {
+                              elems[i] = {...elems[i], name: renameVal}
+                            }
+                          }
+                          console.log(elems)
+                          return elems
+                        })
+                      }}
+                    >
+                      Rename
+                    </Button>
+                  </ButtonGroup>
+                </Card>
+              }
+              position="bottom-left"
+              minimal
+            >
+              <a>Rename</a>
+            </Popover>
             <Popover
               content={
                 <Card>

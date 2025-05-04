@@ -69,7 +69,13 @@ export default function NoteEditor() {
         <></>
       ) : (
         <Editor
-          options={{ minimap: { showSlider: "mouseover", autohide: true } }}
+          options={{
+            minimap: {
+              showSlider: "mouseover",
+              autohide: true,
+              enabled: false,
+            },
+          }}
           defaultLanguage="markdown"
           value={currentNote.content}
           onChange={(value) => {

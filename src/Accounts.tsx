@@ -3,9 +3,9 @@ import { navigateTo } from "./panel_nav";
 import { DateInput3 } from "@blueprintjs/datetime2";
 import { enIN } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { atom, selector, useRecoilState, useRecoilValueLoadable } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { API_URL } from "./persistance";
-import { set } from "date-fns";
+import { Select } from "@blueprintjs/select";
 
 interface Entry {
   date: string;
@@ -121,36 +121,72 @@ export default function Accounts() {
     credit: 0,
   });
 
+  const [month, setMonth] = useState<{name: string, _id: string}>({ name: "April", _id: "apr" });
+
+  const months = [
+    { name: "April", _id: "apr" },
+    { name: "May", _id: "may" },
+    { name: "June", _id: "jun" },
+    { name: "July", _id: "jul" },
+    { name: "Augest", _id: "aug" },
+    { name: "September", _id: "sep" },
+  ];
   useEffect(() => {
     const getAll = async () => {
       const resp = await GetAllEntry();
       const data = await resp.json();
       if (data === null) return;
-      setAllEntry(data);
+      let arr = []
+      data.forEach(element => {
+        const fDate = new Date(element.date).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+        const d = fDate.toLocaleLowerCase()
+        if (d.includes(month._id)) arr.push(element)
+      });
+      setAllEntry(arr);
       let debit = 0;
       let credit = 0;
-      for (let i = 0; i < data.length; i++) {
-        debit += parseFloat(data[i].debit);
-        credit += parseFloat(data[i].credit);
+      for (let i = 0; i < arr.length; i++) {
+        debit += parseFloat(arr[i].debit);
+        credit += parseFloat(arr[i].credit);
       }
       setBalance({ debit, credit });
     };
     getAll();
-  }, [trigger]);
+  }, [trigger, month]);
 
   return (
     <div className="container">
       <h3>Tracker</h3>
-      <div className="mar-top">
-        <a
+      <div className="mar-top account-nav">
+        <Select
+          items={months}
+          itemRenderer={(item) => {
+            return <comps.MenuItem text={item.name} onClick={() => {
+              setMonth(item)
+            }} />;
+          }}
+          onItemSelect={() => {}}
+          filterable={false}
+          popoverProps={{ minimal: true }}
+        >
+          <comps.Button minimal>{month.name}</comps.Button>
+        </Select>
+        <comps.Button
           onClick={() => {
             navigateTo("/accounts");
             setCurrentEntry(null);
           }}
+          minimal
         >
           Add Entry
-        </a>
-        <a onClick={() => setTrigger((prev) => !prev)}>Refresh</a>
+        </comps.Button>
+        <comps.Button onClick={() => setTrigger((prev) => !prev)} minimal>
+          Refresh
+        </comps.Button>
       </div>
 
       <table className="bp5-html-table mb-table bp5-interactive">

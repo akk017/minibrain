@@ -168,7 +168,6 @@ input#required {
 .notes {
     min-width: 300px;
     height: 100%;
-    overflow: hidden;
 }
 
 /* .note-editor {
@@ -251,4 +250,9 @@ table.rmd-table td {
 
 table.rmd-table > thead > tr > th {
     padding-left: 11px !important;
+}
+
+.account-nav {
+    display: flex;
+    gap: 10px;
 }

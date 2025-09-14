@@ -307,6 +307,7 @@ export function AccountSidePanel() {
           placeholder="ex. Salary"
           type="number"
           leftIcon="plus"
+          value={state.credit}
           onValueChange={(value) => {
             setState({ ...state, credit: value.toString() });
           }}

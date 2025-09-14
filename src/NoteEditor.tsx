@@ -41,6 +41,9 @@ export default function NoteEditor() {
       </div>
     );
   }
+  // const debouncedSync = debounce(1500, async () => {
+  //   await UpdateNote(currentNote._id, currentNote);
+  // });
 
   return (
     <div className="container notes">
@@ -90,11 +93,7 @@ export default function NoteEditor() {
             setCurrentNote((note) => {
               return { ...note, content: value };
             });
-
-            const debouncedSync = debounce(300, async () => {
-              await UpdateNote(currentNote._id, currentNote);
-            });
-            debouncedSync();
+            // debouncedSync();
           }}
         />
       )}

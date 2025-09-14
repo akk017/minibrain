@@ -1,6 +1,7 @@
+import { debounce } from 'throttle-debounce';
 import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
-import { QueryRoot } from "../persistance";
+import { QueryRoot, UpdateNote } from "../persistance";
 
 export interface INoteItem {
   name: string;
@@ -28,6 +29,17 @@ export interface INote extends INoteItem {
 export const CurrentNoteState = atom<INote | Empty>({
   key: "CurrentNote",
   default: null,
+  effects: [
+    ({ onSet }) => {
+      const debouncedSync = debounce(500, async (currentNote) => {
+          await UpdateNote(currentNote._id, currentNote);
+        });
+
+        onSet((newValue, _oldValue) => {
+          debouncedSync(newValue);
+        })
+    }
+  ]
 });
 
 export const CurrentFolderState = atom<INoteItem | null>({

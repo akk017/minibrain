@@ -8,6 +8,7 @@ export default function Nav() {
             <Link className="nav-link" to="/workitems">Work Items</Link>
             <Link className="nav-link" to="/notes">Notes</Link>
             <Link className="nav-link" to="/accounts">Accounts</Link>
+            {/* <Link className="nav-link" to="/database">Database</Link> */}
         </div>
     )
 }
